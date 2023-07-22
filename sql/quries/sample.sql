@@ -18,6 +18,11 @@ returning *;
 delete from authors
 where id = $1;
 
+-- name: CreateBook :one
+insert into books (id, title, author_id, price)
+values ($1, $2, $3, $4)
+returning *;
+
 -- name: ListBookOverPrice :many
 select b.title,
     a.name,
@@ -27,3 +32,7 @@ from books b
     and b.author_id = a.id
 where price > $1
 order by b.title;
+
+-- name: ResetTables :exec
+truncate authors,
+books;
